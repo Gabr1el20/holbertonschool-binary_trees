@@ -13,10 +13,12 @@ int binary_tree_heightR(const binary_tree_t *tree)
 	if (!tree) /* stop as leaf not as NULL*/
 		return (0);
 
-	/* countL = binary_tree_heightR(tree->left); */
-	(void)countL;
+	countL = binary_tree_heightR(tree->left);
 	countR = binary_tree_heightR(tree->right);
-	return (countR + 1);
+	if (countR >= countL)
+		return (countR + 1);
+	else
+		return (countL + 1);
 }
 /**
  * binary_tree_heightL - calculates height of the left side
@@ -32,9 +34,11 @@ int binary_tree_heightL(const binary_tree_t *tree)
 		return (0);
 
 	countL = binary_tree_heightL(tree->left);
-	/* countR = binary_tree_heightL(tree->right); */
-	(void)countR;
-	return (countL + 1);
+	countR = binary_tree_heightL(tree->right);
+	if (countR >= countL)
+		return (countR + 1);
+	else
+		return (countL + 1);
 }
 /**
  * binary_tree_balance - calculates balance factor of a tree
