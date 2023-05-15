@@ -1,4 +1,5 @@
 #include "binary_trees.h"
+#include "11-binary_tree_size.c"
 
 /**
  * binary_tree_heightR - calculates height of the left side
@@ -60,21 +61,21 @@ int binary_tree_balance(const binary_tree_t *tree)
 }
 
 /**
- * binary_tree_size - A function that measures the size
- * of a binary tree.
- * @tree: A pointer to the root node of the tree to measure
- * the size.
- * Return: The size of the node, or 0 if tree == NULL
+ * binary_tree_is_full - A function that checks if a
+ * binary tree is full
+ * @tree: Pointer to the root node of the tree to check.
+ * Return: 1 on true, 0 on false
  */
-int tree_size(const binary_tree_t *tree)
+int binary_tree_is_full(const binary_tree_t *tree)
 {
-	int sizebin = 0;
-
 	if (!tree)
 		return (0);
+	if (!tree->left && !tree->right)
+		return (1);
 
-	sizebin += tree_size(tree->left) + tree_size(tree->right) + 1;
-	return (sizebin);
+	if (tree->right && tree->left)
+		return (binary_tree_is_full(tree->left) && binary_tree_is_full(tree->right));
+	return (0);
 }
 
 /**
@@ -84,16 +85,11 @@ int tree_size(const binary_tree_t *tree)
  */
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-	int perfection = tree_size(tree);
-
-	if (binary_tree_balance(tree) == 0)
+	if (binary_tree_size(tree->left) == binary_tree_size(tree->right))
 	{
-		if (perfection == 1)
+		if (binary_tree_is_full(tree) == 1 && binary_tree_balance(tree) == 0)
 			return (1);
-		/* checks if power of 2 */
-		if (perfection & (perfection - 1))
-			return (1);
-		return (0);
 	}
+
 	return (0);
 }
